@@ -23,17 +23,21 @@ server.listen(port, () => {
 io.on('connect', (socket) => {
   console.log('Connected')
 
-  var data = {
-    hello: 'world'
-  }
+  var jsonData = '{ hello : "world"}'
+  saveToDatabase(jsonData, () => {
+    console.log('Saved to database')
+  });
+});
 
+// data must be a json js object
+// for example: { hello: "world" }
+io.on('saveData', (data) => {
   saveToDatabase(data, () => {
     console.log('Saved to database')
   });
+})
 
-});
-
-function saveToDatabase(data, callback){
+function saveToDatabase(jsonData, callback){
 
   mongo.connect(url, {
     useNewUrlParser: true,
@@ -47,6 +51,7 @@ function saveToDatabase(data, callback){
     const db = client.db('heroku_f2wxxsgg');
     const collection = db.collection('data');
 
+    var data = JSON.parse(jsonData);
     collection.insertOne(data, (err, result) => {});
 
     callback();
