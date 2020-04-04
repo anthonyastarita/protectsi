@@ -21,6 +21,12 @@
         </a>
       </div>
 
+      <div id="sidePanel" class = "sidepanel">
+        <text>The College of Staten Island</text>
+        <text>sample notes</text>
+        <text>sample notes</text>
+      </div>
+      
         <div class="navbar-end">
           <a class="navbar-item" href="form.html">
             Form
@@ -55,9 +61,17 @@ function initMap() {
       map: map
   });
 
-  marker.addListener('click', function() {
-//     map.setCenter(marker.getPosition());
-//     document.getElementById("sidePanel").style.width = "300px";
+   marker.addListener('click', function() {
+     map.setCenter(marker.getPosition());
+     var panel = document.getElementById("sidePanel").style.width;
+
+     if(panel == "0px"){
+      document.getElementById("sidePanel").style.width = "300px";
+      requestSidePanel(marker.position);
+     }
+     else{
+      document.getElementById("sidePanel").style.width = "0px";
+     }
   });
 }
 
