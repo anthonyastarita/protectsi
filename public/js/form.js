@@ -38,6 +38,9 @@ function save(){
   }
 
   saveToDatabase(data)
+
+  var log = document.getElementById("log");
+  log.innerHTML = "Saved to database: " + JSON.stringify(data)
 }
 
 function saveToDatabase(data) {

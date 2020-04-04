@@ -19,6 +19,8 @@ function requestData(){
     var data = JSON.parse(jsonData);
 
     //do something with parsed data
+    var temp = document.getElementById("temp-data")
+    temp.innerHTML += jsonData
     console.log(data)
   });
 }
