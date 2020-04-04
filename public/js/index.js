@@ -1,12 +1,12 @@
 let socket = io();
 
 socket.on('connect', (socket) => {
+
   console.log('Connected')
 
   var data = {
     hello: 'world'
   }
-
   saveToDatabase(data)
 
 });

@@ -30,10 +30,6 @@ io.on('connect', (socket) => {
   })
 });
 
-// data must be a json js object
-// for example: { hello: "world" }
-
-
 function saveToDatabase(jsonData, callback){
 
   mongo.connect(url, {
