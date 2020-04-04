@@ -22,15 +22,17 @@ server.listen(port, () => {
 
 io.on('connect', (socket) => {
   console.log('Connected')
+
+  socket.on('saveData', (data) => {
+    saveToDatabase(data, () => {
+      console.log('Saved to database')
+    });
+  })
 });
 
 // data must be a json js object
 // for example: { hello: "world" }
-io.on('saveData', (data) => {
-  saveToDatabase(data, () => {
-    console.log('Saved to database')
-  });
-})
+
 
 function saveToDatabase(jsonData, callback){
 
