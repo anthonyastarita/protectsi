@@ -12,6 +12,6 @@ socket.on('connect', (socket) => {
 });
 
 function saveToDatabase(data) {
-  var jsonData = JSON.stringify(obj)
+  var jsonData = JSON.stringify(data)
   socket.emit('saveData', jsonData)
 }
