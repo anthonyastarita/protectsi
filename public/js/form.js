@@ -14,8 +14,8 @@ function addLocation() {
 function save(){
   console.log('Submitting data.')
 
-  var name_input = document.getElementById("input-name");
-  var location_input = document.getElementById("input-location");
+  // var name_input = document.getElementById("input-name");
+  var location_input = document.getElementById("searchTextField");
   var comment_input = document.getElementById("input-comments");
 
   var symptoms_value
@@ -31,7 +31,7 @@ function save(){
   }
 
   var data = {
-    name: name_input.value,
+    // name: name_input.value,
     location: location_input.value,
     symptoms: symptoms_value,
     comments: comment_input.value
