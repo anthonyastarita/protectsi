@@ -28,17 +28,18 @@ function requestData(onDataSent){
 
   });
 }
-
 function requestSidePanel(coords){
-
   requestData((data) => {
     data.forEach(function (arrayItem) {
-
       if(arrayItem.location == "csi"){
-        var temp = document.getElementById("sidePanel");
-        temp.innerHTML += arrayItem.comments;
-      }
+        var temp = document.getElementById("place");
+        temp.innerHTML = arrayItem.location;
 
+        var ul = document.getElementById("list");
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(arrayItem.comments));
+        ul.appendChild(li);
+      }
     })
   })
 }
