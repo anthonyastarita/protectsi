@@ -1,18 +1,70 @@
 let socket = io();
+var address = "new york";
 
 socket.on('connect', () => {
 
-  requestData((data) => {
-
-    //temporary
-    var temp = document.getElementById("temp-data")
-    temp.innerHTML += JSON.stringify(data)
-
-    console.log(data)
-
-  })
+  // requestData((data) => {
+  //   //temporary
+  //   var temp = document.getElementById("temp-data")
+  //   temp.innerHTML += JSON.stringify(data)
+  //
+  //   console.log(data)
+  // })
 
 });
+
+//called on initMap() in index.html, creates a marker for each valid location from the database
+function initMarkers(map, geocoder){
+
+  requestData((data) => {
+
+    data.forEach((item) => {
+
+      geocoder.geocode( { 'address': item.location}, function(results, status) {
+
+        if (status == google.maps.GeocoderStatus.OK) {
+          var latitude = results[0].geometry.location.lat();
+          var longitude = results[0].geometry.location.lng();
+
+          item.coords = {
+            lat: latitude,
+            lng: longitude,
+          }
+
+          console.log("Placing marker at: " + item.location + " [" + item.coords.lat + "," + item.coords.lng + "]")
+          placeMarker(map, item)
+        }
+        else {
+          console.log("Failed to place marker for item: " + JSON.stringify(item))
+        }
+      })
+    })
+  })
+}
+
+function placeMarker(map, data){
+
+  var marker = new google.maps.Marker({
+    position: data.coords,
+    map: map
+  });
+
+  marker.addListener('click', function() {
+
+    map.setCenter(marker.getPosition());
+
+    var panel_width = document.getElementById("sidePanel").style.width;
+
+    if(panel_width == "0px") {
+      document.getElementById("sidePanel").style.width = "300px";
+      requestSidePanel(data);
+    }
+    else {
+      document.getElementById("sidePanel").style.width = "0px";
+    }
+
+  });
+}
 
 function requestData(onDataSent){
 
@@ -28,18 +80,15 @@ function requestData(onDataSent){
 
   });
 }
-function requestSidePanel(coords){
-  requestData((data) => {
-    data.forEach(function (arrayItem) {
-      if(arrayItem.location == "csi"){
-        var temp = document.getElementById("place");
-        temp.innerHTML = arrayItem.location;
+function requestSidePanel(data){
 
-        var ul = document.getElementById("list");
-        var li = document.createElement("li");
-        li.appendChild(document.createTextNode(arrayItem.comments));
-        ul.appendChild(li);
-      }
-    })
-  })
+  var temp = document.getElementById("place");
+  temp.innerHTML = data.location;
+
+  var ul = document.getElementById("list");
+  ul.innerHTML = ""
+
+  var li = document.createElement("li");
+  li.appendChild(document.createTextNode(data.comments));
+  ul.appendChild(li);
 }

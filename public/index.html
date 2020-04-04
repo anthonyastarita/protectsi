@@ -22,11 +22,11 @@
       </div>
 
       <div id="sidePanel" class = "sidepanel">
-        <text>The College of Staten Island</text>
-        <text>sample notes</text>
-        <text>sample notes</text>
+        <text id ="place"></text>
+        <ul id="list">
+        </ul>
       </div>
-      
+
         <div class="navbar-end">
           <a class="navbar-item" href="form.html">
             Form
@@ -43,7 +43,7 @@
     <div id="temp-data">
       Data from database (temporary) <br>
     </div>
-    
+
   <script>
 
 var map;
@@ -56,23 +56,27 @@ function initMap() {
     disableDefaultUI: true
   });
   
-  var marker = new google.maps.Marker({
-      position: csi,
-      map: map
-  });
+  // var marker = new google.maps.Marker({
+  //     position: csi,
+  //     map: map
+  // });
+  //
+  //  marker.addListener('click', function() {
+  //    map.setCenter(marker.getPosition());
+  //    var panel = document.getElementById("sidePanel").style.width;
+  //
+  //    if(panel == "0px"){
+  //     document.getElementById("sidePanel").style.width = "300px";
+  //     requestSidePanel(marker.position);
+  //    }
+  //    else{
+  //     document.getElementById("sidePanel").style.width = "0px";
+  //    }
+  // });
 
-   marker.addListener('click', function() {
-     map.setCenter(marker.getPosition());
-     var panel = document.getElementById("sidePanel").style.width;
+  var geocoder = new google.maps.Geocoder();
+  initMarkers(map, geocoder)
 
-     if(panel == "0px"){
-      document.getElementById("sidePanel").style.width = "300px";
-      requestSidePanel(marker.position);
-     }
-     else{
-      document.getElementById("sidePanel").style.width = "0px";
-     }
-  });
 }
 
   </script>
