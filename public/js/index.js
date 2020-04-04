@@ -1,15 +1,20 @@
 let socket = io();
 
-var = allData;
-
 socket.on('connect', () => {
 
-  //temp: this doesn't need to be on connect
-  requestData()
+  requestData((data) => {
+
+    //temporary
+    var temp = document.getElementById("temp-data")
+    temp.innerHTML += JSON.stringify(data)
+
+    console.log(data)
+
+  })
 
 });
 
-function requestData(){
+function requestData(onDataSent){
 
   console.log('Requesting data.')
   socket.emit('requestData')
@@ -18,26 +23,22 @@ function requestData(){
   socket.on('dataSent', (jsonData) => {
 
     //parses json string to a js object
-    var data = JSON.parse(jsonData);
+    var data = JSON.parse(jsonData)
+    onDataSent(data)
 
-    //saves data into allData
-    allData = data;
-    
-    //do something with parsed data
-    var temp = document.getElementById("temp-data")
-    temp.innerHTML += jsonData
-    console.log(data)
   });
 }
 
 function requestSidePanel(coords){
 
-    allData.forEach(function (arrayItem) {
-    
+  requestData((data) => {
+    data.forEach(function (arrayItem) {
+
       if(arrayItem.location == "csi"){
         var temp = document.getElementById("sidePanel");
         temp.innerHTML += arrayItem.comments;
       }
 
-
+    })
+  })
 }
