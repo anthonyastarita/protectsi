@@ -25,9 +25,11 @@ io.on('connect', (socket) => {
 
   socket.on('saveData', (data) => {
 
+    console.log('Requesting to save data: ' + data)
+
     if(port === 3000)
     {
-      console.log('Running local, not saving to database.')
+      console.log('Server is local, data is not being saved to database.')
     }
     else
     {

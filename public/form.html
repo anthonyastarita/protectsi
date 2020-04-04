@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>ProtectSI | Form</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/js/form.js"></script>
+</head>
+
+<body>
+    <h1>ProtectSI</h1>
+    <form name = "covidForm" id="covidForm">
+
+        <p><strong>Name:</strong><br>
+        <input id="input-name" type="text" name="topic_owner" size=40 maxlength=150>
+        <p><strong>Location:</strong>
+        <br>
+
+        <div id="locationInput">
+            <input id="input-location" type="text" name="Location" size=40 maxlength=150>
+            <br>
+        </div>
+
+        <input type="button" id = "addLoc" value="Add Location" onclick="addLocation()">
+
+        <br>
+
+        <P><strong>COVID-19 Symptoms: </Strong></P>
+
+        <div id="input-symptoms">
+          <input id="input-radio-you" type="radio" name = "COVID" value="You">You
+          <input id="input-radio-close-contact" type="radio" name = "COVID" value="Close Contact">Close Contact
+          <input id="input-radio-no-symptoms" type="radio" name = "COVID" value="No Symptoms">No Symptoms
+        </div>
+
+        <P><strong>Comment:</strong><br>
+        <textarea id="input-comments" name="post_text" rows=8 cols=40 wrap=virtual></textarea>
+
+        <div>
+          <input type="button" onclick="save()">
+        </div>
+
+    </form>
+</body>
+
+</html>
