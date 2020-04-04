@@ -47,7 +47,7 @@ function saveToDatabase(data, callback){
     const db = client.db('heroku_f2wxxsgg');
     const collection = db.collection('data');
 
-    collection.insertOne(results, (err, result) => {});
+    collection.insertOne(data, (err, result) => {});
 
     callback();
   });
