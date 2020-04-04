@@ -22,14 +22,6 @@ server.listen(port, () => {
 
 io.on('connect', (socket) => {
   console.log('Connected')
-
-  var obj = {
-    hello: 'world'
-  }
-  var jsonData = JSON.stringify(obj)
-  saveToDatabase(jsonData, () => {
-    console.log('Saved to database')
-  });
 });
 
 // data must be a json js object
