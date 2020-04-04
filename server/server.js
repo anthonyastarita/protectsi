@@ -7,7 +7,6 @@ const publicPath = path.join(__dirname,'/../public');
 const port = process.env.PORT || 3000;
 
 const mongo = require('mongodb').MongoClient;
-// const url = process.env.MONGODB_URI || 'mongodb://localhost:27017';
 
 let uri = 'mongodb://heroku_f2wxxsgg:5pdciviihqrjt101vtr5f36ro7@ds133418.mlab.com:33418/heroku_f2wxxsgg';
 
@@ -27,49 +26,56 @@ io.on('connect', (socket) => {
 
   socket.on('saveData', (data) => {
 
-    console.log('Requesting to save data: ' + data)
-
-    // if(port === 3000)
-    // {
-    //   console.log('Server is local, data is not being saved to database.')
-    // }
-    // else
-    // {
-    console.log('Attempting to save to database.')
+    console.log('Requesting to save data to database: ' + data)
     writeToDatabase(data, () => {
       console.log('Saved to database')
     });
-    // }
+
   })
 
   socket.on('requestData', () => {
 
+    console.log('Requesting to data from database.')
+
+    var data = readFromDatabase((data) => {
+      var jsonData = JSON.stringify(data)
+      io.to(socket.id).emit('dataSent', jsonData);
+    });
+
   });
 });
 
-// function readFromDatabase(){
-//   mongo.connect(url, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-//   }, (err, client) => {
-//     if (err) {
-//       console.error(err);
-//       return;
-//     }
-//
-//     const db = client.db('heroku_f2wxxsgg');
-//     const collection = db.collection('data');
-//
-//     var data = JSON.parse(jsonData);
-//     collection.insertOne(data, (err, result) => {});
-//
-//     callback();
-//   });
-// }
+function readFromDatabase(callback){
+  mongo.connect(uri, {
+    useUnifiedTopology: true
+  }, function(err, client) {
+    if(err) throw err;
+    const db = client.db('heroku_f2wxxsgg');
+    const collection = db.collection('data');
+
+    var cursor = collection.find();
+
+    var data = [];
+
+    cursor.each(function(err, item) {
+
+      if(item == null) {
+        console.log("Reached last item.")
+        console.log(data)
+        callback(data)
+        return data
+      }
+
+      data.push(item)
+    });
+
+  });
+}
 
 function writeToDatabase(jsonData, callback){
-
-  mongo.connect(uri, function(err, client) {
+  mongo.connect(uri, {
+    useUnifiedTopology: true
+  }, function(err, client) {
     if(err) throw err;
     const db = client.db('heroku_f2wxxsgg');
     const collection = db.collection('data');
@@ -78,21 +84,3 @@ function writeToDatabase(jsonData, callback){
     callback()
   });
 };
-  // mongo.connect(uri, {
-  //   useNewUrlParser: true,
-  //   useUnifiedTopology: true
-  // }, (err, client) => {
-  //   if (err) {
-  //     console.error(err);
-  //     return;
-  //   }
-  //
-  //   const db = client.db('heroku_f2wxxsgg');
-  //   const collection = db.collection('data');
-  //
-  //   var data = JSON.parse(jsonData);
-  //   collection.insertOne(data, (err, result) => {});
-  //
-  //   callback();
-  // });
-// }
