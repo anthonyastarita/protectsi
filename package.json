@@ -1,0 +1,27 @@
+{
+  "name": "protect-si",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anthonyastarita/protectsi.git"
+  },
+  "engines": {
+   "node": "12.14.1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anthonyastarita/protectsi/issues"
+  },
+  "homepage": "https://github.com/anthonyastarita/protectsi#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
+}
