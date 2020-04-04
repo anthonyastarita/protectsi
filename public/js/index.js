@@ -1,6 +1,6 @@
 let socket = io();
 
-var = allData;
+var allData;
 
 socket.on('connect', () => {
 
@@ -39,5 +39,5 @@ function requestSidePanel(coords){
         temp.innerHTML += arrayItem.comments;
       }
 
-
+});
 }
