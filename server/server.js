@@ -26,9 +26,11 @@ io.on('connect', (socket) => {
   var data = {
     hello: 'world'
   }
+
   saveToDatabase(data, () => {
-    io.to(socket.id).emit('messageSent', 'Results saved to database.');
+    console.log('Saved to database')
   });
+
 });
 
 function saveToDatabase(data, callback){
@@ -41,6 +43,7 @@ function saveToDatabase(data, callback){
       console.error(err);
       return;
     }
+
     const db = client.db('heroku_f2wxxsgg');
     const collection = db.collection('data');
 
