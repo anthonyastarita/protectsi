@@ -59,18 +59,17 @@
   	-moz-border-radius: 5px;
   	border-radius: 5px;
   }
-  .title, .userName {
-    font-weight:700;
-  }
 
-  .post {
+  .post-wrapper {
     border-bottom: 1px solid black;
     padding-bottom: 5px;
   }
 
-  .post .title{
-    font-style:italic;
+  .post-message {
+    margin: 10px
   }
-  .post .body{
-    margin-top:5px;
+
+  .post-time-stamp {
+    font-weight: bold;
+    text-align: right;
   }

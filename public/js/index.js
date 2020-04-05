@@ -84,10 +84,23 @@ function updateMessageBoard(){
     posts_wrapper.innerHTML = ""
 
     data.slice().reverse().forEach((item) => {
-      var post = document.createElement("div");
-      post.className = "post"
-      post.innerHTML = item.message
-      posts_wrapper.appendChild(post)
+
+      if(item.date == null) return
+
+      var post_wrapper = document.createElement("div")
+      post_wrapper.className = "post-wrapper"
+      posts_wrapper.appendChild(post_wrapper)
+
+      var post = document.createElement("div")
+      post.className = "post-message"
+      post.innerHTML = "<strong>Anonymous</strong><br>" + item.message
+      post_wrapper.appendChild(post)
+
+      var time_stamp = document.createElement("div")
+      time_stamp.className = "post-time-stamp"
+      time_stamp.innerHTML = item.time + ' ' + item.date
+      post_wrapper.appendChild(time_stamp)
+
     });
 
   })
@@ -96,8 +109,35 @@ function updateMessageBoard(){
 function postMessage(){
   var message_input = document.getElementById("message-board-input")
 
+  var today = new Date();
+  var date = (today.getMonth()+1)+'/'+(today.getDate())+'/'+today.getFullYear();
+  // var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  time = time.split(':'); // convert to array
+  // fetch
+  var hours = Number(time[0]);
+  var minutes = Number(time[1]);
+  var seconds = Number(time[2]);
+
+  // calculate
+  var timeValue;
+
+  if (hours > 0 && hours <= 12) {
+    timeValue= "" + hours;
+  } else if (hours > 12) {
+    timeValue= "" + (hours - 12);
+  } else if (hours == 0) {
+    timeValue= "12";
+  }
+
+  timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+  // timeValue += (seconds < 10) ? ":0" + seconds : ":" + seconds;  // get seconds
+  timeValue += (hours >= 12) ? " PM" : " AM";  // get AM/PM
+
   var message = {
-    message: message_input.value
+    message: message_input.value,
+    date: date,
+    time: timeValue
   }
 
   console.log("Posting message: " + message.message.toString())
