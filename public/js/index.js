@@ -129,7 +129,6 @@ function postMessage(){
   }
 
   timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
-  // timeValue += (seconds < 10) ? ":0" + seconds : ":" + seconds;  // get seconds
   timeValue += (hours >= 12) ? " PM" : " AM";  // get AM/PM
 
   var message = {
@@ -138,11 +137,16 @@ function postMessage(){
     time: timeValue
   }
 
-  console.log("Posting message: " + message.message.toString())
-  saveToDatabase(MESSAGE_BOARD_COLLECTION, message, () => {
-    updateMessageBoard()
-  });
+  var jsonData = JSON.stringify(data)
+
+  console.log("Posting message: " + jsonData)
+  socket.emit('postMessage', MESSAGE_BOARD_COLLECTION, jsonData)
+
 }
+
+socket.on('postAdded', () => {
+  updateMessageBoard()
+})
 
 function requestData(collection, onDataSent){
 
@@ -159,19 +163,4 @@ function requestData(collection, onDataSent){
     onDataSent(data)
 
   });
-}
-
-function saveToDatabase(collection_name, data, callback) {
-  var jsonData = JSON.stringify(data)
-
-  console.log('Requesting to save data to collection: ' + collection_name)
-
-  socket.on('dataSaved', () => {
-    console.log("Data successfully saved to database.")
-    callback()
-  })
-
-  socket.emit('saveData', collection_name, jsonData)
-
-
 }

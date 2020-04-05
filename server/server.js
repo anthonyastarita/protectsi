@@ -15,6 +15,10 @@ let app = express()
 let server = http.createServer(app)
 let io = socketIO(server)
 
+const MARKER_COLLECTION = 'data'
+const MESSAGE_BOARD_COLLECTION = 'message_board'
+
+
 app.use(express.static(publicPath))
 
 server.listen(port, () => {
@@ -44,6 +48,17 @@ io.on('connect', (socket) => {
     });
 
   });
+
+  socket.on('postMessage', (data) => {
+
+    console.log('Requesting to save data to database: ' + data)
+    writeToDatabase(MESSAGE_BOARD_COLLECTION, data, () => {
+      console.log('Saved to database')
+      io.sockets.emit('postAdded');
+    });
+
+  })
+
 });
 
 function readFromDatabase(collection_name, callback){
