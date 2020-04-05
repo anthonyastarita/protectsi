@@ -137,10 +137,10 @@ function postMessage(){
     time: timeValue
   }
 
-  var jsonData = JSON.stringify(data)
+  var jsonMessage = JSON.stringify(message)
 
-  console.log("Posting message: " + jsonData)
-  socket.emit('postMessage', MESSAGE_BOARD_COLLECTION, jsonData)
+  console.log("Posting message: " + jsonMessage)
+  socket.emit('postMessage', jsonMessage)
 
 }
 
