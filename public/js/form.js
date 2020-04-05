@@ -37,16 +37,16 @@ function save(){
     comments: comment_input.value
   }
 
-  saveToDatabase(data)
+  saveToDatabase('data', data)
 
   var log = document.getElementById("log");
   log.innerHTML = "Saved to database: " + JSON.stringify(data)
 }
 
-function saveToDatabase(data) {
+function saveToDatabase(collection_name, data) {
   var jsonData = JSON.stringify(data)
 
   console.log('Requesting to save data: ' + jsonData)
 
-  socket.emit('saveData', jsonData)
+  socket.emit('saveData', collection_name, jsonData)
 }

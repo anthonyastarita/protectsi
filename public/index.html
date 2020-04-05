@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
+
     <title>Protect-SI</title>
+
     <meta name="viewport" content="initial-scale=1.0">
-    <script src="/socket.io/socket.io.js"></script>
-    <script type="text/javascript" src="/js/index.js"></script>
+    <meta charset="utf-8">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <link rel="stylesheet" href="css/styles.css" />
 
-    <meta charset="utf-8">
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/js/index.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFGfPLeFr9XDvrhAInBZEa3rEP2a7qO7w&callback=initMap" async defer></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+
+    <script>
+    const INIT_CENTER = {lat: 40.6021, lng: -74.1504};
+
+    function initMap() {
+
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 12,
+        center: INIT_CENTER,
+        disableDefaultUI: true
+      });
+
+      var geocoder = new google.maps.Geocoder();
+      initMarkers(map, geocoder)
+
+    }
+    </script>
 
   </head>
 
@@ -40,48 +61,21 @@
     <br>
     <div id="map"></div>
 
-    <!-- <div id="temp-data">
-      Data from database (temporary) <br>
-    </div> -->
+    <div class="wrap">
+      <h1 class="title">Posts</h1>
+      <div id="message-board-posts">
+      </div>
+    </div>
 
-  <script>
+    <div class="wrap">
+      <textarea id="message-board-input" rows="10" cols="125" placeholder="Write your post here..."></textarea>
+      <div>
+        <input type="button" value="Post" onclick="postMessage()">
+      </div>
+    </div>
 
-var map;
-var csi = {lat: 40.6021, lng: -74.1504};
 
-function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 12,
-    center: csi,
-    disableDefaultUI: true
-  });
 
-  // var marker = new google.maps.Marker({
-  //     position: csi,
-  //     map: map
-  // });
-  //
-  //  marker.addListener('click', function() {
-  //    map.setCenter(marker.getPosition());
-  //    var panel = document.getElementById("sidePanel").style.width;
-  //
-  //    if(panel == "0px"){
-  //     document.getElementById("sidePanel").style.width = "300px";
-  //     requestSidePanel(marker.position);
-  //    }
-  //    else{
-  //     document.getElementById("sidePanel").style.width = "0px";
-  //    }
-  // });
-
-  var geocoder = new google.maps.Geocoder();
-  initMarkers(map, geocoder)
-
-}
-
-  </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAFGfPLeFr9XDvrhAInBZEa3rEP2a7qO7w&callback=initMap"
-    async defer></script>
 
   </body>
 </html>

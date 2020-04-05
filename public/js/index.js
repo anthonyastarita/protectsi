@@ -1,22 +1,17 @@
 let socket = io();
-var address = "new york";
+const MARKER_COLLECTION = 'data'
+const MESSAGE_BOARD_COLLECTION = 'message_board'
 
 socket.on('connect', () => {
-
-  // requestData((data) => {
-  //   //temporary
-  //   var temp = document.getElementById("temp-data")
-  //   temp.innerHTML += JSON.stringify(data)
-  //
-  //   console.log(data)
-  // })
-
+  updateMessageBoard()
 });
+
+
 
 //called on initMap() in index.html, creates a marker for each valid location from the database
 function initMarkers(map, geocoder){
 
-  requestData((data) => {
+  requestData(MARKER_COLLECTION, (data) => {
 
     data.forEach((item) => {
 
@@ -66,20 +61,6 @@ function placeMarker(map, data){
   });
 }
 
-function requestData(onDataSent){
-
-  console.log('Requesting data.')
-  socket.emit('requestData')
-
-  //waits for data to be sent
-  socket.on('dataSent', (jsonData) => {
-
-    //parses json string to a js object
-    var data = JSON.parse(jsonData)
-    onDataSent(data)
-
-  });
-}
 function requestSidePanel(data){
 
   var temp = document.getElementById("place");
@@ -91,4 +72,68 @@ function requestSidePanel(data){
   var li = document.createElement("li");
   li.appendChild(document.createTextNode(data.comments));
   ul.appendChild(li);
+}
+
+function updateMessageBoard(){
+
+  console.log("Updating message board.")
+
+  requestData(MESSAGE_BOARD_COLLECTION, (data) => {
+
+    var posts_wrapper = document.getElementById("message-board-posts")
+    posts_wrapper.innerHTML = ""
+
+    data.slice().reverse().forEach((item) => {
+      var post = document.createElement("div");
+      post.className = "post"
+      post.innerHTML = item.message
+      posts_wrapper.appendChild(post)
+    });
+
+  })
+}
+
+function postMessage(){
+  var message_input = document.getElementById("message-board-input")
+
+  var message = {
+    message: message_input.value
+  }
+
+  console.log("Posting message: " + message.message.toString())
+  saveToDatabase(MESSAGE_BOARD_COLLECTION, message, () => {
+    updateMessageBoard()
+  });
+}
+
+function requestData(collection, onDataSent){
+
+  console.log('Requesting data.')
+  socket.emit('requestData', collection)
+
+  //waits for data to be sent
+  socket.on('dataSent', (collection_name, jsonData) => {
+
+    if(collection_name != collection) return
+
+    //parses json string to a js object
+    var data = JSON.parse(jsonData)
+    onDataSent(data)
+
+  });
+}
+
+function saveToDatabase(collection_name, data, callback) {
+  var jsonData = JSON.stringify(data)
+
+  console.log('Requesting to save data to collection: ' + collection_name)
+
+  socket.on('dataSaved', () => {
+    console.log("Data successfully saved to database.")
+    callback()
+  })
+
+  socket.emit('saveData', collection_name, jsonData)
+
+
 }

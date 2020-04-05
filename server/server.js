@@ -24,34 +24,35 @@ server.listen(port, () => {
 io.on('connect', (socket) => {
   console.log('Connected')
 
-  socket.on('saveData', (data) => {
+  socket.on('saveData', (collection_name, data) => {
 
     console.log('Requesting to save data to database: ' + data)
-    writeToDatabase(data, () => {
+    writeToDatabase(collection_name, data, () => {
       console.log('Saved to database')
+      io.to(socket.id).emit('dataSaved');
     });
 
   })
 
-  socket.on('requestData', () => {
+  socket.on('requestData', (collection_name) => {
 
-    console.log('Requesting to data from database.')
+    console.log('Requesting to data from database: ' + collection_name)
 
-    var data = readFromDatabase((data) => {
+    var data = readFromDatabase(collection_name, (data) => {
       var jsonData = JSON.stringify(data)
-      io.to(socket.id).emit('dataSent', jsonData);
+      io.to(socket.id).emit('dataSent', collection_name, jsonData);
     });
 
   });
 });
 
-function readFromDatabase(callback){
+function readFromDatabase(collection_name, callback){
   mongo.connect(uri, {
     useUnifiedTopology: true
   }, function(err, client) {
     if(err) throw err;
     const db = client.db('heroku_f2wxxsgg');
-    const collection = db.collection('data');
+    const collection = db.collection(collection_name);
 
     var cursor = collection.find();
 
@@ -72,13 +73,13 @@ function readFromDatabase(callback){
   });
 }
 
-function writeToDatabase(jsonData, callback){
+function writeToDatabase(collection_name, jsonData, callback){
   mongo.connect(uri, {
     useUnifiedTopology: true
   }, function(err, client) {
     if(err) throw err;
     const db = client.db('heroku_f2wxxsgg');
-    const collection = db.collection('data');
+    const collection = db.collection(collection_name);
     var data = JSON.parse(jsonData);
     collection.insertOne(data, (err, result) => {});
     callback()
