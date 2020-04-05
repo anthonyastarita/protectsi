@@ -37,9 +37,25 @@ function initMarkers(map, geocoder){
 
 function placeMarker(map, data){
 
+  var icon = 'images/google-markers/';
+  switch(data.symptoms){
+    case 'You':
+      icon += 'red-dot.png'
+      break;
+    case 'Close Contact':
+      icon += 'yellow-dot.png'
+      break;
+    case 'No Symptoms':
+      icon += 'green-dot.png'
+      break;
+  }
+
+
   var marker = new google.maps.Marker({
     position: data.coords,
-    map: map
+    map: map,
+    icon: icon
+
   });
 
   marker.addListener('click', function() {
