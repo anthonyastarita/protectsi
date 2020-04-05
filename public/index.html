@@ -8,6 +8,7 @@
     <meta charset="utf-8">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css" />
 
     <script src="/socket.io/socket.io.js"></script>
@@ -37,28 +38,28 @@
   <body>
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <a class="navbar-item" href="index.html">
+        <a class="navbar-item name" href="index.html">
          ProtectSI
         </a>
       </div>
 
-      <div id="sidePanel" class = "sidepanel">
-        <text id ="place"></text>
-        <ul id="list">
-        </ul>
-      </div>
-
         <div class="navbar-end">
-          <a class="navbar-item" href="form.html">
+          <a class="navbar-item page" href="form.html">
             Form
           </a>
 
-          <a class="navbar-item" href="about.html">
+          <a class="navbar-item page" href="about.html">
             About
           </a>
         </div>
     </nav>
     <br>
+    <div id="sidePanel" class = "sidepanel">
+      <br>
+      <text id ="place"></text>
+      <ul id="list">
+      </ul>
+    </div>
     <div id="map"></div>
 
     <div class="wrap">
@@ -70,7 +71,7 @@
     <div class="wrap">
       <textarea id="message-board-input" rows="10" cols="125" placeholder="Write your post here..."></textarea>
       <div>
-        <input type="button" value="Post" onclick="postMessage()">
+        <input type="button" class="post-button" value="Post" onclick="postMessage()">
       </div>
     </div>
 

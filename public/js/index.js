@@ -6,8 +6,6 @@ socket.on('connect', () => {
   updateMessageBoard()
 });
 
-
-
 //called on initMap() in index.html, creates a marker for each valid location from the database
 function initMarkers(map, geocoder){
 
