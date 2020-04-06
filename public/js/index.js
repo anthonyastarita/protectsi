@@ -11,6 +11,8 @@ function initMarkers(map, geocoder){
 
   requestData(MARKER_COLLECTION, (data) => {
 
+    console.log("Recieved data.");
+    
     data.forEach((item) => {
 
       if(item.symptoms == null) return;

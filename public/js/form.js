@@ -19,7 +19,7 @@ function save(){
   var location_input = document.getElementById("neighbourhood-select");
   var comment_input = document.getElementById("input-comments");
 
-  var symptoms_value
+  var symptoms_value = ""
 
   if (document.getElementById("input-radio-you").checked) {
     symptoms_value = document.getElementById("input-radio-you").value
@@ -31,18 +31,17 @@ function save(){
     symptoms_value = document.getElementById("input-radio-no-symptoms").value
   }
 
-  var essential_worker
+  var essential_worker = ""
 
   if (document.getElementById("input-radio-yes").checked) {
-    essential_worker = document.getElementById("input-radio-you").value
+    essential_worker = document.getElementById("input-radio-yes").value
   }
   else if (document.getElementById("input-radio-no").checked) {
     essential_worker = document.getElementById("input-radio-no").value
   }
 
   var data = {
-    // name: name_input.value,
-    location: location_input.value,
+    location: location_input.value + ", Staten Island, NY",
     symptoms: symptoms_value,
     worker: essential_worker,
     comments: comment_input.value
@@ -52,6 +51,7 @@ function save(){
 
   var log = document.getElementById("log");
   log.innerHTML = "Saved to database: " + JSON.stringify(data)
+
 }
 
 function saveToDatabase(collection_name, data) {
