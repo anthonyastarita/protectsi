@@ -13,6 +13,8 @@ function initMarkers(map, geocoder){
 
     data.forEach((item) => {
 
+      if(item.symptoms == null) return;
+
       geocoder.geocode( { 'address': item.location}, function(results, status) {
 
         if (status == google.maps.GeocoderStatus.OK) {
