@@ -16,7 +16,7 @@ function save(){
   console.log('Submitting data.')
 
   // var name_input = document.getElementById("input-name");
-  var location_input = document.getElementById("searchTextField");
+  var location_input = document.getElementById("neighbourhood-select");
   var comment_input = document.getElementById("input-comments");
 
   var symptoms_value

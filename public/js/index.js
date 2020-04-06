@@ -13,6 +13,8 @@ function initMarkers(map, geocoder){
 
     data.forEach((item) => {
 
+      if(item.symptoms == null) return;
+
       geocoder.geocode( { 'address': item.location}, function(results, status) {
 
         if (status == google.maps.GeocoderStatus.OK) {
@@ -37,9 +39,25 @@ function initMarkers(map, geocoder){
 
 function placeMarker(map, data){
 
+  var icon = 'images/google-markers/';
+  switch(data.symptoms){
+    case 'You':
+      icon += 'red-dot.png'
+      break;
+    case 'Close Contact':
+      icon += 'yellow-dot.png'
+      break;
+    case 'No Symptoms':
+      icon += 'green-dot.png'
+      break;
+  }
+
+
   var marker = new google.maps.Marker({
     position: data.coords,
-    map: map
+    map: map,
+    icon: icon
+
   });
 
   marker.addListener('click', function() {
@@ -129,7 +147,6 @@ function postMessage(){
   }
 
   timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
-  // timeValue += (seconds < 10) ? ":0" + seconds : ":" + seconds;  // get seconds
   timeValue += (hours >= 12) ? " PM" : " AM";  // get AM/PM
 
   var message = {
@@ -138,11 +155,16 @@ function postMessage(){
     time: timeValue
   }
 
-  console.log("Posting message: " + message.message.toString())
-  saveToDatabase(MESSAGE_BOARD_COLLECTION, message, () => {
-    updateMessageBoard()
-  });
+  var jsonMessage = JSON.stringify(message)
+
+  console.log("Posting message: " + jsonMessage)
+  socket.emit('postMessage', jsonMessage)
+
 }
+
+socket.on('postAdded', () => {
+  updateMessageBoard()
+})
 
 function requestData(collection, onDataSent){
 
@@ -159,19 +181,4 @@ function requestData(collection, onDataSent){
     onDataSent(data)
 
   });
-}
-
-function saveToDatabase(collection_name, data, callback) {
-  var jsonData = JSON.stringify(data)
-
-  console.log('Requesting to save data to collection: ' + collection_name)
-
-  socket.on('dataSaved', () => {
-    console.log("Data successfully saved to database.")
-    callback()
-  })
-
-  socket.emit('saveData', collection_name, jsonData)
-
-
 }
