@@ -12,53 +12,122 @@ function initMarkers(map, geocoder){
   requestData(MARKER_COLLECTION, (data) => {
 
     console.log("Recieved data.");
-    
-    data.forEach((item) => {
 
-      if(item.symptoms == null) return;
+    var locations = {};
 
-      geocoder.geocode( { 'address': item.location}, function(results, status) {
+    data.forEach((item, i) => {
 
-        if (status == google.maps.GeocoderStatus.OK) {
-          var latitude = results[0].geometry.location.lat();
-          var longitude = results[0].geometry.location.lng();
+      if (!locations.hasOwnProperty(item.location))
+      {
+        locations[item.location] = []
+      }
 
-          item.coords = {
-            lat: latitude,
-            lng: longitude,
-          }
+      locations[item.location].push(item);
+    });
 
-          console.log("Placing marker at: " + item.location + " [" + item.coords.lat + "," + item.coords.lng + "]")
-          placeMarker(map, item)
-        }
-        else {
-          console.log("Failed to place marker for item: " + JSON.stringify(item))
-        }
-      })
-    })
+    for (var location in locations)
+    {
+      geocodeLocation(map, geocoder, location, locations[location]);
+    }
+
+    // locations.forEach((item, i) => {
+    //   geocoder.geocode( { 'address': item.location}, function(results, status) {
+    //
+    //     if (status == google.maps.GeocoderStatus.OK) {
+    //       var latitude = results[0].geometry.location.lat();
+    //       var longitude = results[0].geometry.location.lng();
+    //
+    //       item.coords = {
+    //         lat: latitude,
+    //         lng: longitude,
+    //       }
+    //
+    //       console.log("Placing marker at: " + item.location + " [" + item.coords.lat + "," + item.coords.lng + "]")
+    //       placeMarker(map, item.coords, )
+    //     }
+    //     else {
+    //       console.log("Failed to place marker for item: " + JSON.stringify(item))
+    //     }
+    //   })
+    // });
+
+
+
+
+
+    // data.forEach((item) => {
+    //
+    //   if(item.symptoms == null) return;
+    //
+    //   geocoder.geocode( { 'address': item.location}, function(results, status) {
+    //
+    //     if (status == google.maps.GeocoderStatus.OK) {
+    //       var latitude = results[0].geometry.location.lat();
+    //       var longitude = results[0].geometry.location.lng();
+    //
+    //       item.coords = {
+    //         lat: latitude,
+    //         lng: longitude,
+    //       }
+    //
+    //       console.log("Placing marker at: " + item.location + " [" + item.coords.lat + "," + item.coords.lng + "]")
+    //       placeMarker(map, item.coords, )
+    //     }
+    //     else {
+    //       console.log("Failed to place marker for item: " + JSON.stringify(item))
+    //     }
+    //   })
+    // })
   })
 }
 
-function placeMarker(map, data){
+function geocodeLocation(map, geocoder, location, data)
+{
+  geocoder.geocode( { 'address': location}, function(results, status) {
 
-  var icon = 'images/google-markers/';
-  switch(data.symptoms){
-    case 'You':
-      icon += 'red-dot.png'
-      break;
-    case 'Close Contact':
-      icon += 'yellow-dot.png'
-      break;
-    case 'No Symptoms':
-      icon += 'green-dot.png'
-      break;
-  }
+    var temp = location;
+
+    if (status == google.maps.GeocoderStatus.OK) {
+      var latitude = results[0].geometry.location.lat();
+      var longitude = results[0].geometry.location.lng();
+
+      var coords = {
+        lat: latitude,
+        lng: longitude,
+      }
+
+      placeMarker(map, location, coords, data)
+    }
+    else {
+      console.log("Failed to place marker at location: " + location)
+    }
+  })
+}
+
+function placeMarker(map, location, coords, comments)
+{
+
+  console.log("Placing marker at: " + location + " [" + coords.lat + "," + coords.lng + "]")
+
+
+  // var icon = 'images/google-markers/';
+  // switch(data.symptoms){
+  //   case 'You':
+  //     icon += 'red-dot.png'
+  //     break;
+  //   case 'Close Contact':
+  //     icon += 'yellow-dot.png'
+  //     break;
+  //   case 'No Symptoms':
+  //     icon += 'green-dot.png'
+  //     break;
+  // }
 
 
   var marker = new google.maps.Marker({
-    position: data.coords,
+    position: coords,
     map: map,
-    icon: icon
+    // icon: icon
 
   });
 
@@ -70,7 +139,7 @@ function placeMarker(map, data){
 
     if(panel_width == "0px") {
       document.getElementById("sidePanel").style.width = "300px";
-      requestSidePanel(data);
+      requestSidePanel(location, comments);
     }
     else {
       document.getElementById("sidePanel").style.width = "0px";
@@ -79,17 +148,23 @@ function placeMarker(map, data){
   });
 }
 
-function requestSidePanel(data){
+function requestSidePanel(location, data){
 
   var temp = document.getElementById("place");
-  temp.innerHTML = data.location;
+  temp.innerHTML = location;
 
   var ul = document.getElementById("list");
   ul.innerHTML = ""
 
-  var li = document.createElement("li");
-  li.appendChild(document.createTextNode(data.comments));
-  ul.appendChild(li);
+  data.forEach((data, i) => {
+    
+    var li = document.createElement("li");
+    li.appendChild(document.createTextNode(data.comments));
+    ul.appendChild(li);
+
+  });
+
+
 }
 
 function updateMessageBoard(){
