@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/form.css" />
 
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript" src="js/form.js"></script>
@@ -33,95 +34,123 @@
       </nav>
       <br>
 
-    <form name = "covidForm" id="covidForm">
-
+    <form class="form" name = "covidForm" id="covidForm">
+      
+      <div class="field">
         <!-- <p><strong>Name:</strong><br>
         <input id="input-name" type="text" name="topic_owner" size=40 maxlength=150> -->
-        <p><strong>Location (NOT your home):</strong>
-        <br>
-
-        <div id="locationInput">
-
-          <select class="select" id="neighbourhood-select">
-            <option value="New Dorp">New Dorp</option>
-            <option value="Eltingville">Eltingville</option>
-            <option value="George">St.George</option>
-            <option value="Westerleigh">Westerleigh</option>
-            <option value="Port Richmond">Port Richmond</option>
-            <option value="Tottenville">Tottenville</option>
-            <option value="Annadale">Annadale</option>
-            <option value="Huguenot">Huguenot</option>
-            <option value="Bulls Head">Bulls Head</option>
-            <option value="Mariner's Harbor">Mariner's Harbor</option>
-            <option value="Grymes Hill">Grymes Hill</option>
-            <option value="Stapleton">Stapleton</option>
-            <option value="Clifton">Clifton</option>
-            <option value="Rosebank">Rosebank</option>
-            <option value="Old Town">Old Town</option>
-            <option value="Great Kills">Great Kills</option>
-            <option value="Bay Terrace">Bay Terrace</option>
-            <option value="New Springville">New Springville</option>
-            <option value="Todt Hill">Todt Hill</option>
-            <option value="Emerson Hill">Emerson Hill</option>
-          </select>
-
+        <label class="label">Location (NOT your home):</label>
+        <div class="control"id="locationInput">
+          <div class="select">
+              <select class="select" id="neighbourhood-select">
+                <option value="New Dorp">New Dorp</option>
+                <option value="Eltingville">Eltingville</option>
+                <option value="George">St.George</option>
+                <option value="Westerleigh">Westerleigh</option>
+                <option value="Port Richmond">Port Richmond</option>
+                <option value="Tottenville">Tottenville</option>
+                <option value="Annadale">Annadale</option>
+                <option value="Huguenot">Huguenot</option>
+                <option value="Bulls Head">Bulls Head</option>
+                <option value="Mariner's Harbor">Mariner's Harbor</option>
+                <option value="Grymes Hill">Grymes Hill</option>
+                <option value="Stapleton">Stapleton</option>
+                <option value="Clifton">Clifton</option>
+                <option value="Rosebank">Rosebank</option>
+                <option value="Old Town">Old Town</option>
+                <option value="Great Kills">Great Kills</option>
+                <option value="Bay Terrace">Bay Terrace</option>
+                <option value="New Springville">New Springville</option>
+                <option value="Todt Hill">Todt Hill</option>
+                <option value="Emerson Hill">Emerson Hill</option>
+              </select>
+            </div>
             <!-- <input id="searchTextField" type="text" name="Location" size=40 maxlength=150>
-            <br>
-
-            <script>
-                function init() {
-                    var input = document.getElementById('searchTextField');
-                    var autocomplete = new google.maps.places.Autocomplete(input);
-                }
-
-                google.maps.event.addDomListener(window, 'load', init);
-            </script> -->
-
+            <br> -->
         </div>
+      </div>
 
-        <input type="button" id = "addLoc" value="Add Location" onclick="addLocation()">
+        <!-- <input type="button" id = "addLoc" value="Add Location" onclick="addLocation()"> -->
 
         <br>
 
-        <P><strong>COVID-19 Symptoms: </Strong></P>
-
-        <div id="input-symptoms">
-          <input id="input-radio-you" type="radio" name = "COVID" value="You">You
-          <input id="input-radio-close-contact" type="radio" name = "COVID" value="Close Contact">Close Contact
-          <input id="input-radio-no-symptoms" type="radio" name = "COVID" value="No Symptoms">No Symptoms
+        <div class="field">
+            <label class="label">COVID-19 Symptoms: </label>
+           <div class="control">
+               <div id="input-symptoms">
+                 <label class="radio">
+                  <input id="input-radio-you" type="radio" name = "COVID1" value="You">You
+                </label>
+                <label class="radio">
+                  <input id="input-radio-close-contact" type="radio" name = "COVID1" value="Close Contact">Close Contact
+                </label>
+                <label class="radio">
+                  <input id="input-radio-no-symptoms" type="radio" name = "COVID1" value="No Symptoms">No Symptoms
+                </label>
+                </div>
+           </div>
         </div>
 
-        <P><strong>Are you an essential worker: </Strong></P>
+        <br>
 
+      <div class="field">
+        <label class="label">Are you an essential worker: </label>
+        <div class="control">
         <div id="input-essential-worker">
-          <input id="input-radio-yes" type="radio" name = "COVID" value="Yes">Yes
-          <input id="input-radio-no" type="radio" name = "COVID" value="No">No
+          <label class="radio">
+            <input id="input-radio-yes" type="radio" name = "COVID2" value="Yes">Yes
+          </label>
+          <label class="radio">
+            <input id="input-radio-no" type="radio" name = "COVID2" value="No">No
+          </label>
         </div>
+        </div>
+      </div>
 
-        <P><strong>Have you been </Strong></P>
+      <br>
 
+      <div class="field">
+        <label class="label">Have you been: </label>
+        <div class="control">
           <div id="input-essential-worker">
-            <input id="input-radio-isolation" type="radio" name = "COVID" value="Isolation">In isolation (person who tested positive for COVID-19 or believed to be sick; separated from others)
+            <label class="radio">
+              <input id="input-radio-isolation" type="radio" name = "COVID3" value="Isolation">In isolation (person who tested positive for COVID-19 or believed to be sick; separated from others)
+          </label>
             <br>
-            <input id="input-radio-self-quarantine" type="radio" name = "COVID" value="Self-quarantine">Self-quarantine (exceptional trips to groceries, dog walking, etc.)
+            <label class="radio">
+             <input id="input-radio-self-quarantine" type="radio" name = "COVID3" value="Self-quarantine">Self-quarantine (exceptional trips to groceries, dog walking, etc.)
+            </label>
             <br>
-            <input id="input-radio-social-distancing" type="radio" name = "COVID" value="Social Distancing">Some level of social distancing (no handshake, 6 feet distance, etc)
+            <label class="radio">
+              <input id="input-radio-social-distancing" type="radio" name = "COVID3" value="Social Distancing">Some level of social distancing (no handshake, 6 feet distance, etc)
+            </label>
             <br>
-            <input id="input-radio-no-change" type="radio" name = "COVID" value="No Change">No significant changes in behaviors
+            <label class="radio">
+              <input id="input-radio-no-change" type="radio" name = "COVID3" value="No Change">No significant changes in behaviors
+            </label>
             <br>
           </div>
+        </div>
+      </div>
 
-        <P><strong>Comment:</strong><br>
-        <textarea id="input-comments" name="post_text" rows=8 cols=40 wrap=virtual></textarea>
+      <br>
+
+      <div class="field">
+        <label class="label">Comment:</label>
+        <div class="control">
+          <textarea  id="input-comments" name="post_text" rows=10 cols=60 wrap=virtual></textarea>
+        </div>
+      </div>
 
         <div>
-          <input type="button" onclick="save()" value="submit">
+          <input class="form-button" type="button" onclick="save()" value="Submit">
         </div>
 
         <div id="log">
         </div>
 
     </form>
+
 </body>
 
 </html>
