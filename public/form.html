@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/styles.css" />
 
     <script src="/socket.io/socket.io.js"></script>
-    <script type="text/javascript" src="/js/form.js"></script>
+    <script type="text/javascript" src="js/form.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA-RbuzFYnAJby8XvWgIUTA_DKvgPSMZ8I&libraries=places"></script>
 </head>
 
@@ -67,6 +67,26 @@
           <input id="input-radio-close-contact" type="radio" name = "COVID" value="Close Contact">Close Contact
           <input id="input-radio-no-symptoms" type="radio" name = "COVID" value="No Symptoms">No Symptoms
         </div>
+
+        <P><strong>Are you an essential worker: </Strong></P>
+
+        <div id="input-essential-worker">
+          <input id="input-radio-yes" type="radio" name = "COVID" value="Yes">Yes
+          <input id="input-radio-no" type="radio" name = "COVID" value="No">No
+        </div>
+
+        <P><strong>Have you been </Strong></P>
+
+          <div id="input-essential-worker">
+            <input id="input-radio-isolation" type="radio" name = "COVID" value="Isolation">In isolation (person who tested positive for COVID-19 or believed to be sick; separated from others)
+            <br>
+            <input id="input-radio-self-quarantine" type="radio" name = "COVID" value="Self-quarantine">Self-quarantine (exceptional trips to groceries, dog walking, etc.)
+            <br>
+            <input id="input-radio-social-distancing" type="radio" name = "COVID" value="Social Distancing">Some level of social distancing (no handshake, 6 feet distance, etc)
+            <br>
+            <input id="input-radio-no-change" type="radio" name = "COVID" value="No Change">No significant changes in behaviors
+            <br>
+          </div>
 
         <P><strong>Comment:</strong><br>
         <textarea id="input-comments" name="post_text" rows=8 cols=40 wrap=virtual></textarea>

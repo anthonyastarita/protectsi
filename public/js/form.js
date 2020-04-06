@@ -11,6 +11,7 @@ function addLocation() {
     form.appendChild(br);
 }
 
+
 function save(){
   console.log('Submitting data.')
 
@@ -30,10 +31,20 @@ function save(){
     symptoms_value = document.getElementById("input-radio-no-symptoms").value
   }
 
+  var essential_worker
+
+  if (document.getElementById("input-radio-yes").checked) {
+    essential_worker = document.getElementById("input-radio-you").value
+  }
+  else if (document.getElementById("input-radio-no").checked) {
+    essential_worker = document.getElementById("input-radio-no").value
+  }
+
   var data = {
     // name: name_input.value,
     location: location_input.value,
     symptoms: symptoms_value,
+    worker: essential_worker,
     comments: comment_input.value
   }
 
